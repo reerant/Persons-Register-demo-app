@@ -1,7 +1,7 @@
 package com.demo.persons;
 
 public class Person {
-	private long id;
+	private String id;
 	private String firstName;
 	private String lastName;
 	private String socialSecurityNumber;
@@ -19,7 +19,7 @@ public class Person {
 	}
 
 	// only getter, not able to change after creation
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 

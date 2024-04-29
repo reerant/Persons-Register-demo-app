@@ -4,9 +4,10 @@ import java.util.UUID;
 
 public class UniqueIDGenerator {
 
-	static long generateUniqueID() {
+	static String generateUniqueID() {
 		UUID uniqueID = UUID.randomUUID();
-		long id = Math.abs(uniqueID.getMostSignificantBits());
+		String id = uniqueID.toString();
+		
 		return id;
 
 	}
