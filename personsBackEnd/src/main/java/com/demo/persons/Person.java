@@ -1,15 +1,19 @@
 package com.demo.persons;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+
+
 public class Person {
 	private String id;
-	private String firstName;
-	private String lastName;
-	private String socialSecurityNumber;
-	private String phoneNumber;
-	private Address address;
+	private @NotBlank (message = "First name is required.") String firstName;
+	private @NotBlank  (message = "Last name is required.") String lastName;
+	private @NotBlank  (message = "Social security number is required.") String socialSecurityNumber;
+	private @NotBlank  (message = "Phone number is required.") String phoneNumber;
+	private @Valid Address address;
 
 	public Person(String firstName, String lastName, String socialSecurityNumber, String phoneNumber, Address address) {
-		this.id = UniqueIDGenerator.generateUniqueID();
+		this.id = HelperClass.generateUniqueID();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.socialSecurityNumber = socialSecurityNumber;

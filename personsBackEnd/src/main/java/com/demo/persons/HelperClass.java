@@ -2,7 +2,7 @@ package com.demo.persons;
 
 import java.util.UUID;
 
-public class UniqueIDGenerator {
+public class HelperClass {
 
 	static String generateUniqueID() {
 		UUID uniqueID = UUID.randomUUID();
