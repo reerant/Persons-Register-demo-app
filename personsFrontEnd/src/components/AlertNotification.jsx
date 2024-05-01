@@ -1,29 +1,33 @@
 import PropTypes from "prop-types";
-import Alert from "react-bootstrap/Alert";
+import AlertInfo from "./AlertInfo";
 
 const AlertNotification = ({ alertVariant, setAlertVariant }) => {
-  if (alertVariant === "primary") {
+  if (alertVariant === "success") {
     return (
-      <Alert variant="primary" onClose={() => setAlertVariant("")} dismissible>
-        <Alert.Heading>The form was submitted successfully.</Alert.Heading>
-      </Alert>
+      <AlertInfo
+        alertVariant={alertVariant}
+        setAlertVariant={setAlertVariant}
+        textHeading={"The form was submitted successfully."}
+        text=""
+      />
     );
   } else if (alertVariant === "danger") {
     return (
-      <Alert variant="danger" onClose={() => setAlertVariant("")} dismissible>
-        <Alert.Heading>Unable to submit form. </Alert.Heading>
-        <p>Check that all fields are filled in.</p>
-      </Alert>
+      <AlertInfo
+        alertVariant={alertVariant}
+        setAlertVariant={setAlertVariant}
+        textHeading={"Unable to submit form."}
+        text="Check that all fields are filled in."
+      />
     );
   } else if (alertVariant === "secondary") {
     return (
-      <Alert
-        variant="secondary"
-        onClose={() => setAlertVariant("")}
-        dismissible
-      >
-        <Alert.Heading>No data found with given information. </Alert.Heading>
-      </Alert>
+      <AlertInfo
+        alertVariant={alertVariant}
+        setAlertVariant={setAlertVariant}
+        textHeading={"No data found with given information."}
+        text=""
+      />
     );
   } else {
     return null;
