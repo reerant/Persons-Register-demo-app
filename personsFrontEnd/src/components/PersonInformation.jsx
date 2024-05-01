@@ -1,11 +1,12 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import personRegister from "../services/personRegister";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const PersonInformation = () => {
+const PersonInformation = ({ setAlertVariant }) => {
   const [formInput, setFormInput] = useState("");
   const [personInfo, setPersonInfo] = useState("");
   const [showInfo, setShowInfo] = useState(false);
@@ -39,13 +40,13 @@ const PersonInformation = () => {
       .then((returnedPerson) => {
         setPersonInfo(returnedPerson);
         setShowInfo(true);
-      }).catch((e) => {
+      })
+      .catch((e) => {
+        console.log(e);
         if (e.response.status === 404) {
-            console.log("Not found");
-            setShowInfo(false);
-          } else {console.log(e.message);}
-        
-      
+          setAlertVariant("secondary");
+          setShowInfo(false);
+        }
       });
 
     setFormInput("");
@@ -53,11 +54,22 @@ const PersonInformation = () => {
 
   const updateInfo = (e) => {
     e.preventDefault();
-    personRegister.update(personInfo.id, personInfo).then(() => {});
+    personRegister
+      .update(personInfo.id, personInfo)
+      .then(() => {
+        setAlertVariant("success");
+      })
+      .catch(() => {
+        setAlertVariant("danger");
+      });
   };
 
   const deletePerson = (id, firstName, lastName) => {
-    if (window.confirm(`Do you really want to delete ${firstName} ${lastName} from Person Register?`)) {
+    if (
+      window.confirm(
+        `Do you really want to delete ${firstName} ${lastName} from Person Register?`
+      )
+    ) {
       personRegister.remove(id).then(() => {});
     }
     clearUpdateForm();
@@ -81,92 +93,90 @@ const PersonInformation = () => {
           </Button>
         </Form>
       </div>
-      <div>
-        {showInfo ? (
-          <div>
-            <div>
-              <div
-                style={{
-                  textTransform: "uppercase",
-                  marginBottom: 10,
-                  marginTop: 20,
-                }}
-              >
-                {personInfo.firstName}, {personInfo.lastName}{" "}
-                {personInfo.socialSecurityNumber}
-              </div>
-
-              <Form onSubmit={updateInfo}>
-                <Form.Group className="mb-3" controlId="formUpdatePhoneNumber">
-                  <Form.Label>Phone number</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="phoneNumber"
-                    value={personInfo.phoneNumber}
-                    onChange={handleUpdatePhoneNumber}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formUpdateStreet">
-                  <Form.Label>Street</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="street"
-                    value={personInfo.address.street}
-                    onChange={handleUpdateAddress}
-                  />
-                </Form.Group>
-                <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formUpdatePostalCode">
-                    <Form.Label>Postal code</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="postalCode"
-                      // placeholder="Enter postal code"
-                      value={personInfo.address.postalCode}
-                      onChange={handleUpdateAddress}
-                    />
-                  </Form.Group>
-                  <Form.Group as={Col} controlId="formUpdateCity">
-                    <Form.Label>City</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="city"
-                      // placeholder="Enter city"
-                      value={personInfo.address.city}
-                      onChange={handleUpdateAddress}
-                    />
-                  </Form.Group>
-                </Row>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  style={{ marginRight: 10 }}
-                >
-                  Update
-                </Button>
-                <Button
-                  variant="primary"
-                  style={{ marginRight: 10 }}
-                  onClick={() => clearUpdateForm()}
-                >
-                  Clear
-                </Button>
-                <Button
-                  variant="secondary"
-                  style={{ marginRigth: 10 }}
-                  onClick={() => deletePerson(personInfo.id, personInfo.firstName, personInfo.lastName)}
-                >
-                  Delete
-                </Button>
-              </Form>
-            </div>
+      {showInfo ? (
+        <div>
+          <div
+            style={{
+              textTransform: "uppercase",
+              marginBottom: 10,
+              marginTop: 20,
+            }}
+          >
+            {personInfo.firstName}, {personInfo.lastName}{" "}
+            {personInfo.socialSecurityNumber}
           </div>
-        ) : (
-          <div></div>
-        )}
-      </div>
+
+          <Form onSubmit={updateInfo}>
+            <Form.Group className="mb-3" controlId="formUpdatePhoneNumber">
+              <Form.Label>Phone number</Form.Label>
+              <Form.Control
+                type="text"
+                name="phoneNumber"
+                value={personInfo.phoneNumber}
+                onChange={handleUpdatePhoneNumber}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formUpdateStreet">
+              <Form.Label>Street</Form.Label>
+              <Form.Control
+                type="text"
+                name="street"
+                value={personInfo.address.street}
+                onChange={handleUpdateAddress}
+              />
+            </Form.Group>
+            <Row className="mb-3">
+              <Form.Group as={Col} controlId="formUpdatePostalCode">
+                <Form.Label>Postal code</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="postalCode"
+                  value={personInfo.address.postalCode}
+                  onChange={handleUpdateAddress}
+                />
+              </Form.Group>
+              <Form.Group as={Col} controlId="formUpdateCity">
+                <Form.Label>City</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="city"
+                  value={personInfo.address.city}
+                  onChange={handleUpdateAddress}
+                />
+              </Form.Group>
+            </Row>
+            <Button variant="primary" type="submit" style={{ marginRight: 10 }}>
+              Submit
+            </Button>
+            <Button
+              variant="primary"
+              style={{ marginRight: 10 }}
+              onClick={() => clearUpdateForm()}
+            >
+              Clear
+            </Button>
+            <Button
+              variant="primary"
+              style={{ marginRigth: 10 }}
+              onClick={() =>
+                deletePerson(
+                  personInfo.id,
+                  personInfo.firstName,
+                  personInfo.lastName
+                )
+              }
+            >
+              Delete
+            </Button>
+          </Form>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
-
+PersonInformation.propTypes = {
+  setAlertVariant: PropTypes.func.isRequired,
+};
 export default PersonInformation;

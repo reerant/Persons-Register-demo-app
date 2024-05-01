@@ -2,6 +2,7 @@ import { useState } from "react";
 import personRegister from "./services/personRegister";
 import PersonForm from "./components/PersonForm";
 import PersonInformation from "./components/PersonInformation";
+import AlertNotification from "./components/AlertNotification";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -19,6 +20,8 @@ const App = () => {
       city: "",
     },
   });
+
+  const [alertVariant, setAlertVariant] = useState("");
 
   const clearForm = () => {
     setPerson({
@@ -57,8 +60,14 @@ const App = () => {
         city: person.address.city,
       },
     };
-
-    personRegister.create(newPerson).then(() => {});
+    personRegister
+      .create(newPerson)
+      .then(() => {
+        setAlertVariant("success");
+      })
+      .catch(() => {
+        setAlertVariant("danger");
+      });
     clearForm();
   };
 
@@ -82,6 +91,10 @@ const App = () => {
           </Navbar.Collapse>
         </Navbar>
         <Container>
+          <AlertNotification
+            alertVariant={alertVariant}
+            setAlertVariant={setAlertVariant}
+          />
           <Routes>
             <Route
               path="/"
@@ -94,7 +107,10 @@ const App = () => {
                 />
               }
             />
-            <Route path="/personInformation" element={<PersonInformation />} />
+            <Route
+              path="/personInformation"
+              element={<PersonInformation setAlertVariant={setAlertVariant} />}
+            />
           </Routes>
         </Container>
       </Router>
