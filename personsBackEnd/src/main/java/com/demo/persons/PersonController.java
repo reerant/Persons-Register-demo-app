@@ -34,7 +34,7 @@ public class PersonController {
 			}
 		}
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
-		
+
 	}
 
 	@PutMapping("/persons/{id}")
@@ -64,6 +64,5 @@ public class PersonController {
 		}
 
 	}
-
 
 }

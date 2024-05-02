@@ -3,9 +3,9 @@ package com.demo.persons;
 import jakarta.validation.constraints.NotBlank;
 
 public class Address {
-	private @NotBlank (message = "Street is required.")String street;
-	private @NotBlank (message = "Postal Code is required.")String postalCode;
-	private @NotBlank (message = "City is required.")String city;
+	private @NotBlank(message = "Street is required.") String street;
+	private @NotBlank(message = "Postal Code is required.") String postalCode;
+	private @NotBlank(message = "City is required.") String city;
 
 	public Address(String street, String postalCode, String city) {
 		this.street = street;
