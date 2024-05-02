@@ -4,6 +4,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
+//submit new person info to register
 const PersonForm = ({
   person,
   addPerson,
@@ -46,7 +47,7 @@ const PersonForm = ({
               onChange={handleChangeBasicInfo}
             />
           </Form.Group>
-          <Form.Group as={Col} controlId="formGridLastName">
+          <Form.Group as={Col} controlId="formGridPhoneNumber">
             <Form.Label>Phone number</Form.Label>
             <Form.Control
               type="text"

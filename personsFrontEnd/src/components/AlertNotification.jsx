@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import AlertInfo from "./AlertInfo";
 
+//show alert notification based on different actions
 const AlertNotification = ({ alertVariant, setAlertVariant }) => {
   if (alertVariant === "success") {
     return (
@@ -11,7 +12,7 @@ const AlertNotification = ({ alertVariant, setAlertVariant }) => {
         text=""
       />
     );
-  } else if (alertVariant === "danger") {
+  } else if (alertVariant === "warning") {
     return (
       <AlertInfo
         alertVariant={alertVariant}
@@ -29,9 +30,17 @@ const AlertNotification = ({ alertVariant, setAlertVariant }) => {
         text=""
       />
     );
-  } else {
-    return null;
+  }else if (alertVariant === "danger") {
+    return (
+      <AlertInfo
+        alertVariant={alertVariant}
+        setAlertVariant={setAlertVariant}
+        textHeading={"Something went wrong."}
+        text=""
+      />
+    );
   }
+  return null;
 };
 
 AlertNotification.propTypes = {

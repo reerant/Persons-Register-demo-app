@@ -21,6 +21,7 @@ const App = () => {
     },
   });
 
+  //alert messages for form actions etc.
   const [alertVariant, setAlertVariant] = useState("");
 
   const clearForm = () => {
@@ -66,13 +67,12 @@ const App = () => {
         setAlertVariant("success");
       })
       .catch(() => {
-        setAlertVariant("danger");
+        setAlertVariant("warning");
       });
     clearForm();
   };
 
   return (
-    <>
       <Router>
         <Navbar bg="primary" data-bs-theme="dark" style={{ marginBottom: 20 }}>
           <Nav.Link as={Link} style={{ padding: 10 }} to="/">
@@ -114,7 +114,6 @@ const App = () => {
           </Routes>
         </Container>
       </Router>
-    </>
   );
 };
 

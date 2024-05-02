@@ -6,18 +6,17 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+//show one person information, update info or delete person from register
 const PersonInformation = ({ setAlertVariant }) => {
   const [formInput, setFormInput] = useState("");
   const [personInfo, setPersonInfo] = useState("");
-  const [showInfo, setShowInfo] = useState(false);
+  const [showPersonInfo, setShowPersonInfo] = useState(false);
 
   const handleInput = (e) => {
-    console.log(e.target.value);
     setFormInput(e.target.value);
   };
 
   const handleUpdatePhoneNumber = (e) => {
-    console.log(e.target.value);
     const { name, value } = e.target;
     setPersonInfo({ ...personInfo, [name]: value });
   };
@@ -29,23 +28,17 @@ const PersonInformation = ({ setAlertVariant }) => {
     });
   };
 
-  const clearUpdateForm = () => {
-    setShowInfo(false);
-  };
-
   const getPersonBySocialSecurityNumber = (e) => {
     e.preventDefault();
     personRegister
       .getOneBySocialSecurityNumber(formInput)
       .then((returnedPerson) => {
         setPersonInfo(returnedPerson);
-        setShowInfo(true);
+        setShowPersonInfo(true);
       })
       .catch((e) => {
-        console.log(e);
         if (e.response.status === 404) {
           setAlertVariant("secondary");
-          setShowInfo(false);
         }
       });
 
@@ -58,9 +51,11 @@ const PersonInformation = ({ setAlertVariant }) => {
       .update(personInfo.id, personInfo)
       .then(() => {
         setAlertVariant("success");
+        setShowPersonInfo(false);
+        setFormInput("");
       })
       .catch(() => {
-        setAlertVariant("danger");
+        setAlertVariant("warning");
       });
   };
 
@@ -70,9 +65,15 @@ const PersonInformation = ({ setAlertVariant }) => {
         `Do you really want to delete ${firstName} ${lastName} from Person Register?`
       )
     ) {
-      personRegister.remove(id).then(() => {});
+      personRegister
+        .remove(id)
+        .then(() => {
+          setShowPersonInfo(false);
+        })
+        .catch(() => {
+          setAlertVariant("danger");
+        });
     }
-    clearUpdateForm();
   };
 
   return (
@@ -80,7 +81,7 @@ const PersonInformation = ({ setAlertVariant }) => {
       <div>
         <Form onSubmit={getPersonBySocialSecurityNumber}>
           <Form.Group className="mb-3" controlId="formSearch">
-            <Form.Label>Update phone number or address.</Form.Label>
+            <Form.Label>Search for person</Form.Label>
             <Form.Control
               type="text"
               placeholder="Give social security number"
@@ -93,7 +94,7 @@ const PersonInformation = ({ setAlertVariant }) => {
           </Button>
         </Form>
       </div>
-      {showInfo ? (
+      {showPersonInfo ? (
         <div>
           <div
             style={{
@@ -107,6 +108,7 @@ const PersonInformation = ({ setAlertVariant }) => {
           </div>
 
           <Form onSubmit={updateInfo}>
+            <Form.Label>Update phone number or address.</Form.Label>
             <Form.Group className="mb-3" controlId="formUpdatePhoneNumber">
               <Form.Label>Phone number</Form.Label>
               <Form.Control
@@ -151,7 +153,7 @@ const PersonInformation = ({ setAlertVariant }) => {
             <Button
               variant="primary"
               style={{ marginRight: 10 }}
-              onClick={() => clearUpdateForm()}
+              onClick={() => setShowPersonInfo(false)}
             >
               Clear
             </Button>
@@ -170,9 +172,7 @@ const PersonInformation = ({ setAlertVariant }) => {
             </Button>
           </Form>
         </div>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </>
   );
 };
